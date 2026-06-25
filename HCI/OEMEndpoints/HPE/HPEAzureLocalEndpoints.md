@@ -8,13 +8,12 @@ Refer to the table in the following document to determine if your solution suppo
 
 In addition to [SBE](https://learn.microsoft.com/en-us/azure/azure-local/update/solution-builder-extension) endpoints, some OEM hardware vendors will require additional endpoints for there specific use cases as noted below.
 
-**Last updated on March 19, 2025**
+**Last updated on June 25, 2026**
 
 | Id | Endpoint Description | Endpoint URL                                                           | Port | Notes                                                    | Arc gateway support | Required for                 |
 |----|---------------------|------------------------------------------------------------------------|------|----------------------------------------------------------|---------------------|------------------------------|
-| 1  | SBE Manifest endpoint (all)   | h41380.www4.hpe.com/hpe/microsoft/SBE_Discovery_HPE.xml  | 443  | Enables discovery and confirmation of validity for SBE updates from OEM.  Used by all HPE solutions. | No                  | Deployment & Post deployment |
-| 2  | SBE Manifest endpoint (some models)   | h41380.www4.hpe.com/hpe/SBE/SBE_Discovery_HPE.xml  | 443  | Enables discovery and confirmation of validity for SBE updates from OEM. Only used by HPE DL380 Gen11 Integrated Systems. | No                  | Deployment & Post deployment |
-| 3  | SBE Manifest redirection link (all)     | aka.ms/AzureStackSBEUpdate/HPE                                   | 443  | Microsoft redirection to the explicit OEM SBE manifest endpoint. | No                 | Deployment & Post deployment |
-| 4  | SBE Manifest redirection link (some models)    | aka.ms/AzureStackSBEUpdate/HPE-ProLiant-Standard                                    | 443  | Microsoft redirection to the explicit OEM SBE manifest endpoint. Only used by HPE DL380 Gen11 Integrated Systems. | No                 | Deployment & Post deployment |
-
-
+| 1  | SBE Manifest endpoint (primary)   | h41380.www4.hpe.com/hpe/microsoft/SBE_Discovery_HPE.xml  | 443  | Enables discovery and confirmation of validity for SBE updates from OEM. | No                  | Deployment & Post deployment |
+| 2  | SBE Manifest endpoint (secondary)   | h41380.www4.hpe.com/hpe/SBE/SBE_Discovery_HPE.xml  | 443  | Enables discovery and confirmation of validity for SBE updates from OEM.  | No                  | Deployment & Post deployment |
+| 3  | SBE Manifest redirection link (primary)     | aka.ms/AzureStackSBEUpdate/HPE                                   | 443  | Microsoft redirection to the explicit OEM SBE manifest endpoint. | No                 | Deployment & Post deployment |
+| 4  | SBE Manifest redirection link (secondary)    | aka.ms/AzureStackSBEUpdate/HPE-ProLiant-Standard                                    | 443  | Microsoft redirection to the explicit OEM SBE manifest endpoint.  | No                 | Deployment & Post deployment |
+| 5  | SBE Manifest download connector link   | h30302.www3.hpe.com/pub/*                        | 443  | Enables SBE download connector support.<br><br>The package and meta files of each SBE release are posted in the repository “h30302.www3.hpe.com/pub/” for download purpose. For example:<br><br>h30302.www3.hpe.com/pub/SBE_HPE_ProLiant-Standard_5.0.2604.21.zip?merchantId=PUB_DROPBOX<br><br>h30302.www3.hpe.com/pub/SBE_HPE_ProLiant-Standard_5.0.2604.21.xml?merchantId=PUB_DROPBOX | No                 | Download Connector
