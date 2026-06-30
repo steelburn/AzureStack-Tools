@@ -117,6 +117,7 @@ apt install -y ca-certificates wget apt-transport-https lsb-release gnupg
 
 TMPDIR=$(mktemp -d)
 trap 'rm -rf "$TMPDIR"' EXIT
+mkdir -p /usr/share/keyrings
 
 # Legacy key (pre-Spring 2025 repos)
 wget -q https://packages.microsoft.com/keys/microsoft.asc -O "$TMPDIR/microsoft.asc"
@@ -125,7 +126,8 @@ if [ "$ACTUAL" != "2fa9c05d591a1582a9aba276272478c262e95ad00acf60eaee1644d93941e
   echo "SHA256 mismatch for microsoft.asc!" >&2; exit 1
 fi
 gpg --dearmor "$TMPDIR/microsoft.asc"
-mv "$TMPDIR/microsoft.asc.gpg" /etc/apt/trusted.gpg.d/
+cp "$TMPDIR/microsoft.asc.gpg" /etc/apt/trusted.gpg.d/
+mv "$TMPDIR/microsoft.asc.gpg" /usr/share/keyrings/microsoft-prod.gpg
 
 # Current key (Spring 2025+ repos)
 wget -q https://packages.microsoft.com/keys/microsoft-2025.asc -O "$TMPDIR/microsoft-2025.asc"
@@ -134,7 +136,8 @@ if [ "$ACTUAL" != "d45224d594d969f084232deaaf97c58ca502a9d964c362d7aaef5a76e16b3
   echo "SHA256 mismatch for microsoft-2025.asc!" >&2; exit 1
 fi
 gpg --dearmor "$TMPDIR/microsoft-2025.asc"
-mv "$TMPDIR/microsoft-2025.asc.gpg" /etc/apt/trusted.gpg.d/
+cp "$TMPDIR/microsoft-2025.asc.gpg" /etc/apt/trusted.gpg.d/
+mv "$TMPDIR/microsoft-2025.asc.gpg" /usr/share/keyrings/microsoft-prod-2025.gpg
 KEY_EOF
 
   if [[ "$INSIDER_FAST" == "true" ]]; then
@@ -146,13 +149,12 @@ TMPDIR=$(mktemp -d)
 trap 'rm -rf "$TMPDIR"' EXIT
 
 # Add insiders-fast apt source
-# Note the evidence SDK is only published to 22.04 at the moment, this should be updated with future releases.
-wget -q https://packages.microsoft.com/config/ubuntu/22.04/insiders-fast.list -O "$TMPDIR/insiders-fast.list"
+wget -q https://packages.microsoft.com/config/ubuntu/24.04/insiders-fast.list -O "$TMPDIR/insiders-fast.list"
 ACTUAL=$(sha256sum "$TMPDIR/insiders-fast.list" | awk '{print $1}')
-if [ "$ACTUAL" != "2d7bf753c6036b8e894c93a65b0ce669906ebe54ba2db7107900e7e99ae47712" ]; then
+if [ "$ACTUAL" != "6106538850c7fbb89616393aa7a9ed1094e653603a1b76dd4d7512417cfb6cf8" ]; then
   echo "SHA256 mismatch for insiders-fast.list!" >&2; exit 1
 fi
-cp "$TMPDIR/insiders-fast.list" /etc/apt/sources.list.d/microsoft-insiders-fast.list
+mv "$TMPDIR/insiders-fast.list" /etc/apt/sources.list.d/microsoft-insiders-fast.list
 INSIDER_EOF
   fi
   
